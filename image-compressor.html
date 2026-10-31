@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Compress JPG, PNG and WebP images online for free. Adjust quality and download optimized images.">
+<title>Free Image Compressor | Student Tool Hub</title>
+<style>
+:root {
+  --primary:#6366f1;
+  --bg:#f8fafc;
+  --text:#0f172a;
+  --muted:#64748b;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header {
+  background:white;
+  padding:20px 7%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #e2e8f0;
+}
+.logo { font-size:21px;font-weight:bold; }
+.logo span { color:var(--primary); }
+a { color:var(--primary);text-decoration:none; }
+main { max-width:1000px;margin:50px auto;padding:0 20px; }
+.intro { text-align:center;margin-bottom:30px; }
+h1 { font-size:clamp(30px,5vw,43px); }
+.intro p { color:var(--muted);line-height:1.6; }
+.panel {
+  background:white;
+  border:1px solid #e2e8f0;
+  border-radius:16px;
+  padding:25px;
+}
+.upload {
+  display:block;
+  border:2px dashed #a5b4fc;
+  background:#eef2ff;
+  border-radius:14px;
+  padding:45px 20px;
+  text-align:center;
+  cursor:pointer;
+}
+.upload strong { display:block;font-size:20px;margin:12px 0; }
+.upload p { color:var(--muted); }
+input[type=file] { display:none; }
+.controls { margin-top:28px; }
+.control-row {
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:15px;
+}
+input[type=range] {
+  width:100%;
+  accent-color:var(--primary);
+}
+button,.download {
+  border:0;
+  background:var(--primary);
+  color:white;
+  padding:14px 22px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  display:inline-block;
+  text-align:center;
+}
+button:disabled { opacity:.5;cursor:not-allowed; }
+.actions {
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:25px;
+}
+.result { display:none;margin-top:30px; }
+.preview-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+.preview {
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  padding:15px;
+  text-align:center;
+  min-width:0;
+}
+.preview img {
+  max-width:100%;
+  max-height:280px;
+  object-fit:contain;
+}
+.preview p { color:var(--muted); }
+.savings {
+  margin:22px 0;
+  padding:17px;
+  background:#eef2ff;
+  border-radius:10px;
+  text-align:center;
+  font-weight:bold;
+}
+.info {
+  margin-top:35px;
+  background:white;
+  padding:25px;
+  border-radius:14px;
+  line-height:1.8;
+}
+.info p { color:var(--muted); }
+#message { color:#475569;margin-top:15px; }
+footer {
+  text-align:center;
+  color:var(--muted);
+  padding:35px;
+}
+@media(max-width:600px) {
+  .preview-grid { grid-template-columns:1fr; }
+  header { padding:18px; }
+  main { margin-top:30px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Student <span>Tool Hub</span></div>
+  <a href="./">← Back to Home</a>
+</header>
+
+<main>
+  <div class="intro">
+    <h1>Free Online Image Compressor</h1>
+    <p>Reduce image file size in seconds. No signup or upload to a server required.</p>
+  </div>
+
+  <div class="panel">
+    <label class="upload" for="fileInput">
+      <div style="font-size:42px">🖼️</div>
+      <strong>Click to Upload an Image</strong>
+      <p>Supports JPG, PNG and WebP</p>
+      <input type="file" id="fileInput"
+             accept="image/jpeg,image/png,image/webp">
+    </label>
+
+    <div class="controls">
+      <div class="control-row">
+        <strong>Compression Quality</strong>
+        <strong id="qualityValue">70%</strong>
+      </div>
+      <input type="range" id="quality"
+             min="10" max="100" value="70">
+      <p style="color:#64748b;font-size:14px">
+        Lower quality usually means smaller file size.
+        Output format: JPEG.
+        Transparent backgrounds will become white.
+      </p>
+    </div>
+
+    <div class="actions">
+      <button id="compressBtn" disabled>Compress Image</button>
+    </div>
+    <p id="message" role="status" aria-live="polite"></p>
+
+    <div class="result" id="result">
+      <div class="preview-grid">
+        <div class="preview">
+          <h3>Original Image</h3>
+          <img id="originalPreview" alt="Original image preview">
+          <p id="originalSize"></p>
+        </div>
+        <div class="preview">
+          <h3>Compressed Image</h3>
+          <img id="compressedPreview" alt="Compressed image preview">
+          <p id="compressedSize"></p>
+        </div>
+      </div>
+      <div class="savings" id="savings"></div>
+      <a class="download" id="downloadBtn">Download Image ↓</a>
+    </div>
+  </div>
+
+  <section class="info">
+    <h2>About Our Image Compressor</h2>
+    <p>This free tool helps reduce image file sizes for websites, assignments and everyday use. Choose an image, adjust its quality and download the result.</p>
+    <p>Images are processed locally in your browser. They are not uploaded to our servers. The result is saved as JPEG, so transparency and some image metadata are not preserved.</p>
+    <p>Some images may become larger after conversion, especially small or highly optimized files. Always compare the output size before downloading.</p>
+  </section>
+</main>
+
+<footer>© 2026 Student Tool Hub. All rights reserved.</footer>
+
+<script>
+const fileInput = document.getElementById("fileInput");
+const quality = document.getElementById("quality");
+const qualityValue = document.getElementById("qualityValue");
+const compressBtn = document.getElementById("compressBtn");
+const result = document.getElementById("result");
+const message = document.getElementById("message");
+
+let selectedFile = null;
+let originalURL = null;
+let compressedURL = null;
+
+const formatSize = bytes =>
+  bytes < 1024 * 1024
+    ? (bytes / 1024).toFixed(1) + " KB"
+    : (bytes / (1024 * 1024)).toFixed(2) + " MB";
+
+quality.addEventListener("input", () => {
+  qualityValue.textContent = quality.value + "%";
+});
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  selectedFile = null;
+  compressBtn.disabled = true;
+  result.style.display = "none";
+
+  if (originalURL) URL.revokeObjectURL(originalURL);
+  if (compressedURL) URL.revokeObjectURL(compressedURL);
+  originalURL = null;
+  compressedURL = null;
+
+  if (!file) {
+    message.textContent = "";
+    return;
+  }
+
+  if (!["image/jpeg","image/png","image/webp"].includes(file.type)) {
+    message.textContent = "Please select a JPG, PNG or WebP image.";
+    return;
+  }
+
+  selectedFile = file;
+  compressBtn.disabled = false;
+  message.textContent = "Selected: " + file.name;
+});
+
+compressBtn.addEventListener("click", async () => {
+  if (!selectedFile) return;
+
+  const file = selectedFile;
+  compressBtn.disabled = true;
+  result.style.display = "none";
+  message.textContent = "Compressing image...";
+
+  try {
+    const sourceURL = URL.createObjectURL(file);
+    const img = new Image();
+
+    try {
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = sourceURL;
+      });
+    } finally {
+      URL.revokeObjectURL(sourceURL);
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Canvas unavailable");
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0);
+
+    const blob = await new Promise((resolve, reject) => {
+      canvas.toBlob(
+        b => b ? resolve(b) : reject(new Error("Compression failed")),
+        "image/jpeg",
+        Number(quality.value) / 100
+      );
+    });
+
+    if (file !== selectedFile) return;
+
+    if (originalURL) URL.revokeObjectURL(originalURL);
+    if (compressedURL) URL.revokeObjectURL(compressedURL);
+
+    originalURL = URL.createObjectURL(file);
+    compressedURL = URL.createObjectURL(blob);
+
+    document.getElementById("originalPreview").src = originalURL;
+    document.getElementById("compressedPreview").src = compressedURL;
+    document.getElementById("originalSize").textContent =
+      formatSize(file.size);
+    document.getElementById("compressedSize").textContent =
+      formatSize(blob.size);
+
+    const reduction = (1 - blob.size / file.size) * 100;
+    document.getElementById("savings").textContent =
+      reduction >= 0
+        ? "File size reduced by " + reduction.toFixed(1) + "%"
+        : "Output is " + Math.abs(reduction).toFixed(1) +
+          "% larger than the original";
+
+    const download = document.getElementById("downloadBtn");
+    download.href = compressedURL;
+    download.download =
+      file.name.replace(/\.[^.]+$/, "") + "-compressed.jpg";
+
+    result.style.display = "block";
+    message.textContent = "Compression complete!";
+  } catch (error) {
+    message.textContent =
+      "Unable to compress this image. Try a smaller image.";
+  } finally {
+    compressBtn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
