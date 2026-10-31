@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Generate free QR codes for links and text online. Download your QR code as a PNG image.">
+  <title>Free QR Code Generator | Student Tool Hub</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fc;
+      color: #1e293b;
+    }
+    header {
+      background: #2563eb;
+      color: white;
+      padding: 24px 16px;
+      text-align: center;
+    }
+    nav {
+      background: #1e40af;
+      padding: 12px;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 12px;
+      text-decoration: none;
+    }
+    main {
+      max-width: 650px;
+      margin: 35px auto;
+      padding: 0 16px;
+    }
+    .tool {
+      background: white;
+      padding: 28px;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px #00000010;
+      text-align: center;
+    }
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+      resize: vertical;
+    }
+    button, .download {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 12px 22px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    button:hover, .download:hover {
+      background: #1d4ed8;
+    }
+    #qrCode {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+    }
+    #qrCode canvas, #qrCode img {
+      max-width: 100%;
+      height: auto;
+    }
+    #downloadBtn { display: none; }
+    #message { color: #dc2626; }
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Free QR Code Generator</h1>
+  <p>Create and download QR codes instantly</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="tools.html">All Tools</a>
+</nav>
+
+<main>
+  <section class="tool">
+    <h2>Generate Your QR Code</h2>
+    <p>Enter a website link or any text below.</p>
+
+    <textarea id="qrText" rows="4"
+      maxlength="2000"
+      placeholder="Enter URL or text..."></textarea>
+
+    <button onclick="generateQR()">Generate QR Code</button>
+
+    <p id="message" role="status"></p>
+
+    <div id="qrCode"></div>
+
+    <a id="downloadBtn" class="download"
+       download="student-tool-hub-qr.png">
+       Download PNG
+    </a>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2026 Student Tool Hub</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+  function generateQR() {
+    const text = document.getElementById("qrText").value.trim();
+    const container = document.getElementById("qrCode");
+    const download = document.getElementById("downloadBtn");
+    const message = document.getElementById("message");
+
+    container.innerHTML = "";
+    download.style.display = "none";
+    download.removeAttribute("href");
+    message.textContent = "";
+
+    if (!text) {
+      message.textContent = "Please enter a URL or some text.";
+      return;
+    }
+
+    if (typeof QRCode === "undefined") {
+      message.textContent = "QR generator could not load. Check your internet connection.";
+      return;
+    }
+
+    try {
+      new QRCode(container, {
+        text: text,
+        width: 256,
+        height: 256,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      setTimeout(function() {
+        const canvas = container.querySelector("canvas");
+        const img = container.querySelector("img");
+
+        if (canvas) {
+          download.href = canvas.toDataURL("image/png");
+          download.style.display = "inline-block";
+        } else if (img && img.src) {
+          download.href = img.src;
+          download.style.display = "inline-block";
+        }
+      }, 200);
+    } catch (error) {
+      message.textContent = "Unable to generate QR code. Try shorter text.";
+    }
+  }
+</script>
+
+</body>
+</html>
