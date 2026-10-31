@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Contact Student Tool Hub for feedback, suggestions, and support with our free online tools.">
+<title>Contact Us | Student Tool Hub</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
+  line-height: 1.7;
+}
+header {
+  background: #fff;
+  padding: 20px 7%;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+.logo span {
+  color: #6366f1;
+}
+a {
+  color: #6366f1;
+  text-decoration: none;
+}
+main {
+  max-width: 950px;
+  margin: 45px auto;
+  padding: 0 20px;
+}
+.hero {
+  text-align: center;
+  padding: 35px 15px;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 46px);
+  margin-bottom: 12px;
+}
+.hero p {
+  color: #64748b;
+  max-width: 650px;
+  margin: auto;
+}
+.section {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 30px;
+  margin: 25px 0;
+}
+.section h2 {
+  margin-top: 0;
+}
+.section p {
+  color: #475569;
+}
+.email-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 22px;
+  text-align: center;
+}
+.email-address {
+  font-size: 18px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.button {
+  display: inline-block;
+  background: #6366f1;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 9px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.button.secondary {
+  background: white;
+  color: #6366f1;
+  border: 1px solid #6366f1;
+}
+.note {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 15px;
+}
+.faq {
+  border-bottom: 1px solid #e2e8f0;
+  padding: 15px 0;
+}
+.faq:last-child {
+  border-bottom: none;
+}
+.faq h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+.faq p {
+  margin: 0;
+}
+footer {
+  text-align: center;
+  padding: 35px 20px;
+  color: #64748b;
+}
+footer a {
+  margin: 0 8px;
+}
+@media (max-width: 600px) {
+  header {
+    padding: 18px;
+  }
+  .section {
+    padding: 20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    Student <span>Tool Hub</span>
+  </div>
+  <a href="./">← Back to Home</a>
+</header>
+
+<main>
+
+<section class="hero">
+  <h1>Contact Us</h1>
+  <p>
+    Have a question, suggestion, or feedback?
+    We'd love to hear from you.
+  </p>
+</section>
+
+<section class="section">
+  <h2>Get in Touch</h2>
+  <p>
+    Contact Student Tool Hub for questions about
+    our tools, technical issues, feedback, or
+    suggestions for new features.
+  </p>
+
+  <div class="email-box">
+    <p>Our Contact Email</p>
+
+    <div class="email-address" id="email">
+      riteshbadwaik08@gmail.com
+    </div>
+
+    <div class="actions">
+      <a
+        class="button"
+        href="mailto:riteshbadwaik08@gmail.com?subject=Student%20Tool%20Hub%20Inquiry">
+        ✉ Email Us
+      </a>
+
+      <button
+        class="button secondary"
+        type="button"
+        onclick="copyEmail()">
+        📋 Copy Email
+      </button>
+    </div>
+
+    <p class="note" id="copyStatus" role="status">
+      Email Us opens your email app.
+      You can also copy the address and
+      send a message manually.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <h2>How Can We Help?</h2>
+  <p>💡 Suggest a new online tool</p>
+  <p>🛠 Report a technical problem</p>
+  <p>📝 Share feedback about the website</p>
+  <p>🤝 Send a general inquiry</p>
+</section>
+
+<section class="section">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq">
+    <h3>Are Student Tool Hub tools free?</h3>
+    <p>
+      Yes. Our currently available tools are free
+      to use without registration.
+    </p>
+  </div>
+
+  <div class="faq">
+    <h3>Do I need to create an account?</h3>
+    <p>
+      No. Our current tools do not require
+      account registration.
+    </p>
+  </div>
+
+  <div class="faq">
+    <h3>Can I suggest a new tool?</h3>
+    <p>
+      Absolutely! Email your suggestion to our
+      contact address above.
+    </p>
+  </div>
+
+  <div class="faq">
+    <h3>Can I report a problem?</h3>
+    <p>
+      Yes. Please include the tool name,
+      a description of the issue, and
+      your browser or device details.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>© 2026 Student Tool Hub. All rights reserved.</p>
+  <a href="./">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="privacy-policy.html">Privacy Policy</a>
+</footer>
+
+<script>
+async function copyEmail() {
+  const email = document.getElementById("email").textContent.trim();
+  const status = document.getElementById("copyStatus");
+
+  try {
+    await navigator.clipboard.writeText(email);
+    status.textContent = "Email address copied successfully!";
+  } catch (error) {
+    status.textContent =
+      "Unable to copy automatically. Please select and copy the email address above.";
+  }
+}
+</script>
+
+</body>
+</html>
