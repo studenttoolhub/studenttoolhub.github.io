@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Free online AI, PDF, image and student tools.">
+  <title>Student Tool Hub | Free Online Tools</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --background: #f8fafc;
+      --text: #0f172a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--background);
+      color: var(--text);
+    }
+    header {
+      background: white;
+      padding: 20px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 12px #0000000a;
+    }
+    .logo { font-size: 22px; font-weight: bold; }
+    .logo span { color: var(--primary); }
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      margin-left: 20px;
+    }
+    .hero {
+      text-align: center;
+      padding: 85px 20px 65px;
+      background: linear-gradient(135deg,#eef2ff,#f8fafc);
+    }
+    .hero h1 { font-size: clamp(32px,5vw,52px); margin: 0; }
+    .hero h1 span { color: var(--primary); }
+    .hero p { color: #64748b; font-size: 17px; }
+    .search {
+      width: min(100%,520px);
+      padding: 17px;
+      margin-top: 22px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+    main { max-width: 1150px; margin: auto; padding: 45px 20px; }
+    h2 { text-align: center; margin-bottom: 30px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
+      gap: 22px;
+    }
+    .card {
+      background: white;
+      padding: 30px 24px;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      transition: .2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px #00000010;
+    }
+    .emoji { font-size: 35px; }
+    .card h3 { margin-bottom: 8px; }
+    .card p { color: #64748b; line-height: 1.6; }
+    .card a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #64748b;
+      background: white;
+      margin-top: 45px;
+    }
+    @media(max-width:600px) {
+      header { flex-direction: column; gap: 14px; }
+      nav a { margin: 0 8px; font-size: 14px; }
+      .hero { padding: 60px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Student <span>Tool Hub</span></div>
+    <nav>
+      <a href="#tools">Tools</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>All Your Tools. <span>One Place.</span></h1>
+    <p>Free online tools for students, creators and everyone.</p>
+    <input class="search" id="search" type="search"
+           placeholder="Search tools..." aria-label="Search tools">
+  </section>
+
+  <main id="tools">
+    <h2>Explore Our Tools</h2>
+    <div class="grid" id="toolGrid">
+      <div class="card">
+        <div class="emoji">🤖</div>
+        <h3>AI Tools</h3>
+        <p>Writing assistance, summarizing and smart productivity tools.</p>
+        <a href="#about">Coming Soon</a>
+      </div>
+      <div class="card">
+        <div class="emoji">📄</div>
+        <h3>PDF Tools</h3>
+        <p>Merge, split, convert and manage PDF documents.</p>
+        <a href="#about">Coming Soon</a>
+      </div>
+      <div class="card">
+        <div class="emoji">🖼️</div>
+        <h3>Image Tools</h3>
+        <p>Resize, compress and convert images online.</p>
+        <a href="#about">Coming Soon</a>
+      </div>
+      <div class="card">
+        <div class="emoji">🎓</div>
+        <h3>Student Tools</h3>
+        <p>CGPA calculators, word counters and study utilities.</p>
+        <a href="#about">Coming Soon</a>
+      </div>
+    </div>
+  </main>
+
+  <section id="about" style="text-align:center;padding:30px 20px">
+    <h2>Simple. Fast. Free.</h2>
+    <p>Useful tools designed to make everyday tasks easier.</p>
+  </section>
+
+  <footer>© 2026 Student Tool Hub. All rights reserved.</footer>
+
+  <script>
+    const search = document.getElementById("search");
+    const cards = document.querySelectorAll(".card");
+    search.addEventListener("input", () => {
+      const term = search.value.toLowerCase();
+      cards.forEach(card => {
+        card.style.display = card.textContent.toLowerCase()
+          .includes(term) ? "" : "none";
+      });
+    });
+  </script>
+</body>
+</html>
