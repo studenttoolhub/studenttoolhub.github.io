@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Explore free PDF, image and student tools at Student Tool Hub. No signup required.">
+<title>All Free Tools | Student Tool Hub</title>
+
+<style>
+:root {
+  --primary:#6366f1;
+  --bg:#f8fafc;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:#e2e8f0;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header {
+  background:white;
+  border-bottom:1px solid var(--border);
+  padding:20px 7%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+.logo { font-size:22px;font-weight:bold; }
+.logo span { color:var(--primary); }
+a { text-decoration:none;color:var(--primary); }
+main { max-width:1100px;margin:45px auto;padding:0 20px; }
+.hero { text-align:center;margin-bottom:35px; }
+.hero h1 { font-size:clamp(30px,5vw,44px); }
+.hero p { color:var(--muted);line-height:1.7; }
+.search {
+  width:100%;
+  max-width:600px;
+  padding:16px 20px;
+  border:1px solid #cbd5e1;
+  border-radius:12px;
+  font-size:16px;
+  margin-top:15px;
+}
+.filters {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  margin:30px 0;
+}
+.filter {
+  border:1px solid #c7d2fe;
+  background:white;
+  color:#4338ca;
+  padding:11px 18px;
+  border-radius:30px;
+  cursor:pointer;
+  font-weight:bold;
+}
+.filter.active {
+  background:var(--primary);
+  color:white;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+  gap:22px;
+}
+.card {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:25px;
+  transition:transform .2s,box-shadow .2s;
+}
+.card:hover {
+  transform:translateY(-4px);
+  box-shadow:0 12px 25px rgba(15,23,42,.08);
+}
+.card .emoji { font-size:38px; }
+.card h2 { font-size:20px;margin:18px 0 10px; }
+.card p {
+  color:var(--muted);
+  line-height:1.6;
+  min-height:76px;
+}
+.category {
+  display:inline-block;
+  background:#eef2ff;
+  color:#4338ca;
+  font-size:12px;
+  font-weight:bold;
+  padding:6px 10px;
+  border-radius:20px;
+}
+.open {
+  display:block;
+  background:var(--primary);
+  color:white;
+  text-align:center;
+  padding:13px;
+  border-radius:9px;
+  font-weight:bold;
+  margin-top:20px;
+}
+#empty {
+  text-align:center;
+  color:var(--muted);
+  padding:30px;
+}
+.note {
+  margin-top:40px;
+  text-align:center;
+  color:var(--muted);
+  line-height:1.7;
+}
+footer {
+  text-align:center;
+  padding:35px;
+  color:var(--muted);
+}
+@media(max-width:600px) {
+  header { padding:18px; }
+  main { margin-top:30px; }
+  .card p { min-height:auto; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">Student <span>Tool Hub</span></div>
+  <a href="./">← Back to Home</a>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Explore All Free Tools</h1>
+    <p>Simple, useful online tools for students, creators and everyday tasks.</p>
+
+    <input
+      class="search"
+      id="search"
+      type="search"
+      placeholder="Search tools..."
+      aria-label="Search tools"
+    >
+  </section>
+
+  <div class="filters" aria-label="Tool categories">
+    <button class="filter active" data-category="all">All Tools</button>
+    <button class="filter" data-category="pdf">PDF Tools</button>
+    <button class="filter" data-category="image">Image Tools</button>
+    <button class="filter" data-category="student">Student Tools</button>
+  </div>
+
+  <div class="grid" id="toolGrid">
+
+    <article class="card" data-category="student"
+             data-search="word counter words characters sentences reading time">
+      <div class="emoji">📝</div>
+      <span class="category">Student Tools</span>
+      <h2>Word Counter</h2>
+      <p>Count words, characters, sentences and estimated reading time instantly.</p>
+      <a class="open" href="word-counter.html">Open Tool →</a>
+    </article>
+
+    <article class="card" data-category="image"
+             data-search="image compressor photo jpg png webp reduce size">
+      <div class="emoji">🖼️</div>
+      <span class="category">Image Tools</span>
+      <h2>Image Compressor</h2>
+      <p>Reduce image file sizes easily using your browser. No signup needed.</p>
+      <a class="open" href="image-compressor.html">Open Tool →</a>
+    </article>
+
+    <article class="card" data-category="pdf"
+             data-search="pdf merger combine merge documents pdf files">
+      <div class="emoji">📄</div>
+      <span class="category">PDF Tools</span>
+      <h2>PDF Merger</h2>
+      <p>Combine multiple PDF files into one document and arrange their order.</p>
+      <a class="open" href="pdf-merger.html">Open Tool →</a>
+    </article>
+
+    <article class="card" data-category="student"
+             data-search="cgpa calculator grade points credits gpa college">
+      <div class="emoji">🎓</div>
+      <span class="category">Student Tools</span>
+      <h2>CGPA Calculator</h2>
+      <p>Calculate credit-weighted CGPA using subjects, credits and grade points.</p>
+      <a class="open" href="cgpa-calculator.html">Open Tool →</a>
+    </article>
+
+  </div>
+
+  <p id="empty" hidden>No matching tools found. Try another search.</p>
+
+  <p class="note">
+    All tools are free to use. More useful tools are coming soon!
+  </p>
+</main>
+
+<footer>© 2026 Student Tool Hub. All rights reserved.</footer>
+
+<script>
+const searchInput = document.getElementById("search");
+const filters = document.querySelectorAll(".filter");
+const cards = document.querySelectorAll(".card");
+const empty = document.getElementById("empty");
+
+let activeCategory = "all";
+
+function updateTools() {
+  const query = searchInput.value.toLowerCase().trim();
+  let visible = 0;
+
+  cards.forEach(card => {
+    const matchesCategory =
+      activeCategory === "all" ||
+      card.dataset.category === activeCategory;
+
+    const searchableText =
+      (card.dataset.search + " " + card.textContent).toLowerCase();
+
+    const matchesSearch = searchableText.includes(query);
+    const show = matchesCategory && matchesSearch;
+
+    card.hidden = !show;
+    if (show) visible++;
+  });
+
+  empty.hidden = visible !== 0;
+}
+
+filters.forEach(button => {
+  button.addEventListener("click", () => {
+    activeCategory = button.dataset.category;
+
+    filters.forEach(btn => {
+      btn.classList.toggle("active", btn === button);
+    });
+
+    updateTools();
+  });
+});
+
+searchInput.addEventListener("input", updateTools);
+</script>
+</body>
+</html>
