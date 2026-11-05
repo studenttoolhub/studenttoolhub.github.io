@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Resize JPG and PNG images online for free. Set custom dimensions and download resized images instantly.">
+  <title>Free Image Resizer | Student Tool Hub</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fc;
+      color: #1e293b;
+    }
+
+    header {
+      background: #2563eb;
+      color: white;
+      padding: 24px 16px;
+      text-align: center;
+    }
+
+    nav {
+      background: #1e40af;
+      padding: 12px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 12px;
+      text-decoration: none;
+    }
+
+    main {
+      max-width: 650px;
+      margin: 35px auto;
+      padding: 0 16px;
+    }
+
+    .tool {
+      background: white;
+      padding: 26px;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px #00000010;
+    }
+
+    input[type="file"], input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    .dimensions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    button, .download {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    button:hover, .download:hover {
+      background: #1d4ed8;
+    }
+
+    button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .preview {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .preview img {
+      max-width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+    }
+
+    #downloadBtn {
+      display: none;
+      margin-top: 15px;
+    }
+
+    #message {
+      color: #dc2626;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #64748b;
+    }
+
+    @media (max-width: 450px) {
+      .dimensions {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Free Image Resizer</h1>
+  <p>Resize your images to custom dimensions online</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="tools.html">All Tools</a>
+</nav>
+
+<main>
+  <section class="tool">
+    <h2>Resize Your Image</h2>
+    <p>Upload a JPG or PNG image and enter your desired dimensions.</p>
+
+    <label for="imageInput">Choose Image</label>
+    <input type="file" id="imageInput" accept="image/jpeg,image/png">
+
+    <div class="dimensions">
+      <div>
+        <label for="width">Width (px)</label>
+        <input type="number" id="width" min="1" max="10000" placeholder="Width">
+      </div>
+
+      <div>
+        <label for="height">Height (px)</label>
+        <input type="number" id="height" min="1" max="10000" placeholder="Height">
+      </div>
+    </div>
+
+    <p>
+      <input type="checkbox" id="aspectRatio" checked>
+      <label for="aspectRatio">Maintain aspect ratio</label>
+    </p>
+
+    <button id="resizeBtn" type="button" disabled>Resize Image</button>
+
+    <p id="message" role="status"></p>
+
+    <div class="preview">
+      <img id="previewImage" alt="Resized image preview" hidden>
+      <p id="dimensionsInfo"></p>
+      <a id="downloadBtn" class="download" download="resized-image.png">
+        Download Resized Image
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2026 Student Tool Hub</p>
+</footer>
+
+<script>
+  const imageInput = document.getElementById("imageInput");
+  const widthInput = document.getElementById("width");
+  const heightInput = document.getElementById("height");
+  const ratioCheckbox = document.getElementById("aspectRatio");
+  const resizeBtn = document.getElementById("resizeBtn");
+  const previewImage = document.getElementById("previewImage");
+  const downloadBtn = document.getElementById("downloadBtn");
+  const message = document.getElementById("message");
+  const dimensionsInfo = document.getElementById("dimensionsInfo");
+
+  let originalImage = null;
+  let originalWidth = 0;
+  let originalHeight = 0;
+  let originalRatio = 0;
+  let imageURL = null;
+
+  imageInput.addEventListener("change", function () {
+    const file = this.files[0];
+
+    message.textContent = "";
+    previewImage.hidden = true;
+    downloadBtn.style.display = "none";
+    dimensionsInfo.textContent = "";
+
+    if (imageURL) {
+      URL.revokeObjectURL(imageURL);
+      imageURL = null;
+    }
+
+    originalImage = null;
+    resizeBtn.disabled = true;
+
+    if (!file) return;
+
+    if (!["image/jpeg", "image/png"].includes(file.type)) {
+      message.textContent = "Please choose a JPG or PNG image.";
+      this.value = "";
+      return;
+    }
+
+    const img = new Image();
+    const temporaryURL = URL.createObjectURL(file);
+
+    img.onload = function () {
+      originalImage = img;
+      originalWidth = img.naturalWidth;
+      originalHeight = img.naturalHeight;
+      originalRatio = originalWidth / originalHeight;
+
+      widthInput.value = originalWidth;
+      heightInput.value = originalHeight;
+
+      resizeBtn.disabled = false;
+      URL.revokeObjectURL(temporaryURL);
+    };
+
+    img.onerror = function () {
+      message.textContent = "Unable to load this image.";
+      URL.revokeObjectURL(temporaryURL);
+    };
+
+    img.src = temporaryURL;
+  });
+
+  widthInput.addEventListener("input", function () {
+    if (ratioCheckbox.checked && originalRatio > 0) {
+      const w = Number(widthInput.value);
+      if (w > 0) heightInput.value = Math.round(w / originalRatio);
+    }
+  });
+
+  heightInput.addEventListener("input", function () {
+    if (ratioCheckbox.checked && originalRatio > 0) {
+      const h = Number(heightInput.value);
+      if (h > 0) widthInput.value = Math.round(h * originalRatio);
+    }
+  });
+
+  resizeBtn.addEventListener("click", function () {
+    if (!originalImage) return;
+
+    const width = Number(widthInput.value);
+    const height = Number(heightInput.value);
+
+    if (!Number.isInteger(width) || !Number.isInteger(height) ||
+        width < 1 || height < 1 || width > 10000 || height > 10000) {
+      message.textContent = "Enter valid dimensions between 1 and 10000 pixels.";
+      return;
+    }
+
+    if (width * height > 40000000) {
+      message.textContent = "Image dimensions are too large. Choose smaller dimensions.";
+      return;
+    }
+
+    message.textContent = "";
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+    context.drawImage(originalImage, 0, 0, width, height);
+
+    const file = imageInput.files[0];
+    const outputType = file.type === "image/png" ? "image/png" : "image/jpeg";
+
+    canvas.toBlob(function (blob) {
+      if (!blob) {
+        message.textContent = "Could not resize this image. Please try again.";
+        return;
+      }
+
+      if (imageURL) URL.revokeObjectURL(imageURL);
+
+      imageURL = URL.createObjectURL(blob);
+
+      previewImage.src = imageURL;
+      previewImage.hidden = false;
+
+      dimensionsInfo.textContent =
+        "Resized dimensions: " + width + " × " + height + " pixels";
+
+      downloadBtn.href = imageURL;
+      downloadBtn.download =
+        outputType === "image/png" ? "resized-image.png" : "resized-image.jpg";
+
+      downloadBtn.style.display = "inline-block";
+    }, outputType, 0.92);
+  });
+</script>
+
+</body>
+</html>
