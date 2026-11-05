@@ -4,39 +4,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <meta name="description" content="Split PDF files online for free. Extract selected pages from PDF documents and download a new PDF securely in your browser.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://studenttoolhub.github.io/pdf-splitter.html">
+
   <title>Free PDF Splitter Online | Student Tool Hub</title>
+
   <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f4f7fb;
       color: #172033;
     }
+
     header {
       background: #172554;
       color: white;
       padding: 20px;
       text-align: center;
     }
-    header a { color: white; text-decoration: none; }
+
+    header a {
+      color: white;
+      text-decoration: none;
+    }
+
     .container {
       max-width: 760px;
       margin: 35px auto;
       padding: 20px;
     }
+
     .panel {
       background: white;
       padding: 28px;
       border-radius: 14px;
       box-shadow: 0 4px 18px #0000000d;
     }
+
     h1 { margin-top: 0; font-size: 28px; }
-    .sub { color: #64748b; line-height: 1.6; }
+
+    .sub {
+      color: #64748b;
+      line-height: 1.6;
+    }
+
     .upload {
       border: 2px dashed #94a3b8;
       padding: 30px 15px;
@@ -45,12 +63,15 @@
       margin: 22px 0;
       background: #f8fafc;
     }
+
     input[type="file"] { max-width: 100%; }
+
     label {
       display: block;
       font-weight: bold;
       margin: 18px 0 8px;
     }
+
     input[type="text"] {
       width: 100%;
       padding: 14px;
@@ -58,6 +79,7 @@
       border-radius: 8px;
       font-size: 16px;
     }
+
     button {
       border: 0;
       border-radius: 8px;
@@ -69,8 +91,14 @@
       color: white;
       margin-top: 16px;
     }
-    button:disabled { opacity: .55; cursor: not-allowed; }
+
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
     .secondary { background: #0f766e; }
+
     .info {
       background: #eff6ff;
       padding: 14px;
@@ -78,32 +106,52 @@
       margin-top: 15px;
       line-height: 1.5;
     }
-    #status { margin-top: 18px; line-height: 1.5; }
+
+    #status {
+      margin-top: 18px;
+      line-height: 1.5;
+    }
+
     .error { color: #b91c1c; }
     .success { color: #15803d; }
     .hidden { display: none; }
+
     footer {
       text-align: center;
       padding: 25px;
       color: #64748b;
     }
-    footer a { color: #2563eb; margin: 0 8px; }
+
+    footer a {
+      color: #2563eb;
+      margin: 0 8px;
+    }
+
     @media(max-width: 600px) {
-      .container { margin: 15px auto; padding: 12px; }
+      .container {
+        margin: 15px auto;
+        padding: 12px;
+      }
+
       .panel { padding: 20px; }
       h1 { font-size: 24px; }
     }
   </style>
 </head>
+
 <body>
+
   <header>
     <a href="index.html"><strong>Student Tool Hub</strong></a>
     <p>Free Online Student Tools</p>
   </header>
 
   <main class="container">
+
     <section class="panel">
+
       <h1>Free PDF Splitter</h1>
+
       <p class="sub">
         Extract specific pages from a PDF and create a new PDF file.
         Free, simple and secure.
@@ -111,12 +159,18 @@
 
       <div class="upload">
         <p><strong>Select your PDF file</strong></p>
-        <input type="file" id="pdfFile" accept=".pdf,application/pdf">
+        <input
+          type="file"
+          id="pdfFile"
+          accept=".pdf,application/pdf"
+        >
+        <p class="sub">Maximum file size: 100 MB</p>
       </div>
 
       <div id="fileInfo" class="info hidden"></div>
 
       <label for="pageRanges">Pages to extract</label>
+
       <input
         type="text"
         id="pageRanges"
@@ -130,6 +184,7 @@
       </p>
 
       <button id="splitBtn" disabled>Split PDF</button>
+
       <button id="downloadBtn" class="secondary hidden">
         Download Split PDF
       </button>
@@ -140,17 +195,22 @@
         <strong>Privacy:</strong> Your PDF is processed locally
         in your browser. It is not uploaded to our server.
       </div>
+
     </section>
 
     <section class="panel" style="margin-top:22px">
+
       <h2>How to split a PDF?</h2>
+
       <ol>
         <li>Choose a PDF file from your device.</li>
         <li>Enter the pages or page ranges you need.</li>
         <li>Click Split PDF.</li>
         <li>Download your new PDF.</li>
       </ol>
+
     </section>
+
   </main>
 
   <footer>
@@ -167,41 +227,89 @@
     const fileInfo = document.getElementById("fileInfo");
     const statusBox = document.getElementById("status");
 
+    const MAX_FILE_SIZE = 100 * 1024 * 1024;
+
     let originalPdf = null;
     let totalPages = 0;
     let outputUrl = null;
-pageRanges.addEventListener("input", () => {
-  downloadBtn.classList.add("hidden");
+    let loadRequestId = 0;
+    let isProcessing = false;
 
-  if (outputUrl) {
-    URL.revokeObjectURL(outputUrl);
-    outputUrl = null;
-  }
-});
     function showStatus(message, type = "") {
       statusBox.className = type;
       statusBox.textContent = message;
     }
 
-    fileInput.addEventListener("change", async () => {
-      originalPdf = null;
-      totalPages = 0;
-      splitBtn.disabled = true;
-      pageRanges.disabled = true;
+    function clearOutput() {
       downloadBtn.classList.add("hidden");
-      fileInfo.classList.add("hidden");
 
       if (outputUrl) {
         URL.revokeObjectURL(outputUrl);
         outputUrl = null;
       }
+    }
+
+    function invalidateCurrentLoad() {
+      loadRequestId++;
+      originalPdf = null;
+      totalPages = 0;
+      isProcessing = false;
+      splitBtn.disabled = true;
+      pageRanges.disabled = true;
+      clearOutput();
+    }
+
+    if (typeof PDFLib === "undefined") {
+      showStatus(
+        "PDF processing library could not load. Please refresh the page and try again.",
+        "error"
+      );
+    }
+
+    fileInput.addEventListener("change", async () => {
+
+      invalidateCurrentLoad();
+
+      const requestId = loadRequestId;
+
+      fileInfo.classList.add("hidden");
+      pageRanges.value = "";
 
       const file = fileInput.files[0];
-      if (!file) return;
 
-      if (file.type !== "application/pdf" &&
-          !file.name.toLowerCase().endsWith(".pdf")) {
-        showStatus("Please select a valid PDF file.", "error");
+      if (!file) {
+        showStatus("Please select a PDF file.");
+        return;
+      }
+
+      if (file.size > MAX_FILE_SIZE) {
+        fileInput.value = "";
+
+        showStatus(
+          "File is too large. Please select a PDF of 100 MB or smaller.",
+          "error"
+        );
+        return;
+      }
+
+      if (
+        file.type !== "application/pdf" &&
+        !file.name.toLowerCase().endsWith(".pdf")
+      ) {
+        fileInput.value = "";
+
+        showStatus(
+          "Please select a valid PDF file.",
+          "error"
+        );
+        return;
+      }
+
+      if (typeof PDFLib === "undefined") {
+        showStatus(
+          "PDF processing library is unavailable. Please refresh and try again.",
+          "error"
+        );
         return;
       }
 
@@ -209,11 +317,27 @@ pageRanges.addEventListener("input", () => {
 
       try {
         const bytes = await file.arrayBuffer();
-        originalPdf = await PDFLib.PDFDocument.load(bytes);
+
+        if (requestId !== loadRequestId) return;
+
+        const loadedPdf = await PDFLib.PDFDocument.load(bytes);
+
+        if (requestId !== loadRequestId) return;
+
+        originalPdf = loadedPdf;
         totalPages = originalPdf.getPageCount();
+
+        if (totalPages < 1) {
+          originalPdf = null;
+          totalPages = 0;
+
+          showStatus("This PDF contains no extractable pages.", "error");
+          return;
+        }
 
         fileInfo.textContent =
           `${file.name} — ${totalPages} pages detected.`;
+
         fileInfo.classList.remove("hidden");
 
         pageRanges.disabled = false;
@@ -221,8 +345,14 @@ pageRanges.addEventListener("input", () => {
         pageRanges.value = `1-${totalPages}`;
 
         showStatus("PDF loaded successfully.", "success");
+
       } catch (error) {
+
+        if (requestId !== loadRequestId) return;
+
         originalPdf = null;
+        totalPages = 0;
+
         showStatus(
           "Unable to read this PDF. It may be damaged or password-protected.",
           "error"
@@ -230,8 +360,19 @@ pageRanges.addEventListener("input", () => {
       }
     });
 
+    pageRanges.addEventListener("input", () => {
+
+      clearOutput();
+
+      if (!isProcessing) {
+        showStatus("Page selection changed. Split the PDF again.");
+      }
+    });
+
     function parseRanges(input) {
+
       const pages = new Set();
+
       const parts = input.split(",").map(x => x.trim());
 
       if (!input.trim() || parts.some(x => !x)) {
@@ -239,16 +380,23 @@ pageRanges.addEventListener("input", () => {
       }
 
       for (const part of parts) {
+
         if (/^\d+$/.test(part)) {
+
           const page = Number(part);
-          if (page < 1 || page > totalPages) {
-            throw new Error(`Page ${page} is outside the PDF page range.`);
+
+          if (!Number.isSafeInteger(page) || page < 1 || page > totalPages) {
+            throw new Error(
+              `Page ${page} is outside the PDF page range.`
+            );
           }
+
           pages.add(page - 1);
           continue;
         }
 
         const match = part.match(/^(\d+)\s*-\s*(\d+)$/);
+
         if (!match) {
           throw new Error(`Invalid page range: ${part}`);
         }
@@ -256,7 +404,13 @@ pageRanges.addEventListener("input", () => {
         const start = Number(match[1]);
         const end = Number(match[2]);
 
-        if (start < 1 || end > totalPages || start > end) {
+        if (
+          !Number.isSafeInteger(start) ||
+          !Number.isSafeInteger(end) ||
+          start < 1 ||
+          end > totalPages ||
+          start > end
+        ) {
           throw new Error(`Invalid range: ${part}`);
         }
 
@@ -269,15 +423,20 @@ pageRanges.addEventListener("input", () => {
     }
 
     splitBtn.addEventListener("click", async () => {
-      if (!originalPdf) return;
 
+      if (!originalPdf || isProcessing) return;
+
+      clearOutput();
+
+      isProcessing = true;
       splitBtn.disabled = true;
-      downloadBtn.classList.add("hidden");
 
       try {
+
         showStatus("Creating your new PDF...");
 
         const selectedPages = parseRanges(pageRanges.value);
+
         const newPdf = await PDFLib.PDFDocument.create();
 
         const copiedPages = await newPdf.copyPages(
@@ -288,36 +447,57 @@ pageRanges.addEventListener("input", () => {
         copiedPages.forEach(page => newPdf.addPage(page));
 
         const pdfBytes = await newPdf.save();
+
         const blob = new Blob([pdfBytes], {
           type: "application/pdf"
         });
 
-        if (outputUrl) URL.revokeObjectURL(outputUrl);
-
         outputUrl = URL.createObjectURL(blob);
 
         downloadBtn.classList.remove("hidden");
+
         showStatus(
           `${selectedPages.length} page(s) extracted successfully!`,
           "success"
         );
+
       } catch (error) {
-        showStatus(error.message || "Something went wrong.", "error");
+
+        clearOutput();
+
+        showStatus(
+          error.message || "Something went wrong while splitting the PDF.",
+          "error"
+        );
+
       } finally {
-        splitBtn.disabled = false;
+
+        isProcessing = false;
+        splitBtn.disabled = !originalPdf;
       }
     });
 
     downloadBtn.addEventListener("click", () => {
+
       if (!outputUrl) return;
 
       const link = document.createElement("a");
+
       link.href = outputUrl;
       link.download = "student-tool-hub-split.pdf";
+
       document.body.appendChild(link);
       link.click();
       link.remove();
     });
+
+    window.addEventListener("beforeunload", () => {
+      if (outputUrl) {
+        URL.revokeObjectURL(outputUrl);
+      }
+    });
+
   </script>
+
 </body>
 </html>
